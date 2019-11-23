@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Khan Answers
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.1.1
 // @description  try to take over the world!
 // @author       Lemons
 // @match        *://www.khanacademy.org/*
@@ -27,10 +27,14 @@ window.fetch = function(data) {
                 var answer;
 
                 if (options.choices) {
-                    answer = options.choices.find(a => a.correct).content;
-                } else if (options.answers) {
+                    answer = options.choices.find(c => c.correct).content;
+                }
+
+                if (options.answers) {
                     answer = JSON.stringify(options.answers.map(a => a.value));
-                } else if (options.correct) {
+                }
+
+                if (options.correct) {
                     answer = options.correct.coords;
                 }
 
