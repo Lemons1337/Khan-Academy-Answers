@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Khan Answers
 // @namespace    http://tampermonkey.net/
-// @version      0.1.1
+// @version      0.1.2
 // @description  try to take over the world!
 // @author       Lemons
 // @match        *://www.khanacademy.org/*
@@ -22,16 +22,20 @@ window.fetch = function(data) {
             var answers = [];
 
             Object.keys(widgets).forEach(key => {
-                var options = widgets[key].options;
+                var { options } = widgets[key];
 
                 var answer;
+
+                if (options.value) {
+                    answer = options.value;
+                }
 
                 if (options.choices) {
                     answer = options.choices.find(c => c.correct).content;
                 }
 
                 if (options.answers) {
-                    answer = JSON.stringify(options.answers.map(a => a.value));
+                    answer = '[' + options.answers.map(a => a.value).join(', ') + ']';
                 }
 
                 if (options.correct) {
