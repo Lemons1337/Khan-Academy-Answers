@@ -9,7 +9,7 @@
 // @grant        none
 // ==/UserScript==
 
- var _fetch = window.fetch;
+var _fetch = window.fetch;
 window.fetch = function(data) {
 
     if (data.url.includes('/api/internal/user/exercises')) {
