@@ -36,7 +36,7 @@ Response.prototype.text = function() {
                 }
 
                 if (options.answers) {
-                    answer = 'options.answers.map(a => a.value).join(', ');
+                    answer = options.answers.map(a => a.value).join(', ');
                 }
 
                 if (options.correct) {
