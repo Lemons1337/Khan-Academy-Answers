@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Khan Answers
 // @namespace    http://tampermonkey.net/
-// @version      0.1.3
+// @version      0.1.4
 // @description  try to take over the world!
 // @author       Lemons
 // @match        *://www.khanacademy.org/*
@@ -9,12 +9,15 @@
 // @grant        none
 // ==/UserScript==
 
-var _fetch = window.fetch;
-window.fetch = function(data) {
+var text = Response.prototype.text;
+Response.prototype.text = function() {
+    var promise = text.apply(this, arguments);
 
-    if (data.url.includes('/api/internal/user/exercises')) {
-        _fetch.apply(this, arguments).then(res => res.json()).then(data => {
-            var json = JSON.parse(data.itemData);
+    if (this.url.includes('/graphql/getAssessmentItem')) {
+        promise.then(res => {
+            res = JSON.parse(res);
+
+            var json = JSON.parse(res.data.assessmentItem.item.itemData);
             var widgets = json.question.widgets;
 
             var answers = [];
@@ -51,5 +54,5 @@ window.fetch = function(data) {
         });
     }
 
-    return _fetch.apply(this, arguments);
+    return promise;
 }
